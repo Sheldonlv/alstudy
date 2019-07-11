@@ -213,4 +213,45 @@ public class RBTree<T extends Comparable<T>>{
         // 设置node的父结点为其左孩子
         node.parent = leftChild;
     }
+
+    /**
+     * 向红黑树插入结点
+     * @param key
+     */
+    public void insert(T key){
+        RBTNode<T> node = new RBTNode<T>(BLACK, key, null, null, null);
+        if (node != null) insert(node);
+    }
+
+    /**
+     * 插入结点
+     * @param node
+     */
+    private void insert(RBTNode<T> node){
+        int cmp;
+        RBTNode<T> root = this.root;
+        RBTNode<T> parent = null;
+        // 定位结点添加到哪个父节点下
+        while (root != null){
+            parent = root;
+            cmp = node.key.compareTo(root.key);
+            if (cmp < 0)root = root.left;
+            else root = root.right;
+        }
+
+        node.parent = parent;
+        // 表示当前没一个节点， 那么久当新增的节点为根节点
+        if (null == parent){
+            this.root = node;
+        }else {
+            // 找出当前父节点下新增节点的位置
+            cmp = node.key.compareTo(parent.key);
+            if (cmp < 0) parent.left = node;
+            else parent.right = node;
+        }
+        // 设置插入节点的颜色为红色
+        node.color = RED;
+        // 修正为红黑树
+        insertFixUp(node);
+    }
 }
