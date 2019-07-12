@@ -322,4 +322,27 @@ public class RBTree<T extends Comparable<T>>{
         // 维持第一准则：根节点为黑色
         setColorBlack(this.root);
     }
+
+    /**
+     * 测试主方法
+     * @param args
+     */
+    public static void main(String[] args) {
+        // 创建测试树
+        RBTree<Integer> tree = new RBTree<Integer>();
+        // 创建结点
+        RBTNode<Integer> node1 = new RBTNode<Integer>(RED, 10, null, null, null);
+        RBTNode<Integer> node2 = new RBTNode<Integer>(RED, 5, null, null, null);
+        RBTNode<Integer> node3 = new RBTNode<Integer>(RED, 9, null, null, null);
+        RBTNode<Integer> node4 = new RBTNode<Integer>(RED, 3, null, null, null);
+        RBTNode<Integer> node5 = new RBTNode<Integer>(RED, 6, null, null, null);
+        // 插入各个结点
+        tree.insert(node1);
+        tree.insert(node2);
+        tree.insert(node3);
+        tree.insert(node4);
+        tree.insert(node5);
+        // 先序遍历输出树
+        tree.DLR(tree.root);
+    }
 }
