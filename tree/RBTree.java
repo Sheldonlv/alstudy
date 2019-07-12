@@ -63,6 +63,16 @@ public class RBTree<T extends Comparable<T>>{
         if (node!=null) node.color = BLACK;
     }
 
+    // 设置颜色为红色
+    private void setColorRed(RBTNode<T> node){
+        if (node != null) node.color = RED;
+    }
+
+    // 设置颜色为黑色
+    private void setColorBlack(RBTNode<T> node){
+        if (node != null) node.color = BLACK;
+    }
+
     /**
      * 前序遍历红黑树
      * @param node
@@ -253,5 +263,63 @@ public class RBTree<T extends Comparable<T>>{
         node.color = RED;
         // 修正为红黑树
         insertFixUp(node);
+    }
+
+    /**
+     * 红黑树插入修正
+     * @param node
+     */
+    private void insertFixUp(RBTNode<T> node){
+        RBTNode<T> parent, gparent;
+        // 节点的父节点存在且为红色
+        while (((parent = node.parent) != null)&&isRed(parent)){
+            gparent = parent.parent;
+
+            // 如果其祖父节点是空怎么处理
+            // 若父节点是祖父节点的左孩子
+            if (parent == gparent.left){
+                RBTNode<T> uncle = gparent.right;
+                if ((uncle != null)&&isRed(uncle)){
+                    setColorBlack(uncle);
+                    setColorBlack(parent);
+                    setColorRed(gparent);
+                    node = gparent;
+                    continue;
+                }
+
+                if (parent.right == node){
+                    RBTNode<T> tmp;
+                    leftRotate(parent);
+                    tmp = parent;
+                    parent = node;
+                    node = tmp;
+                }
+                setColorBlack(parent);
+                setColorRed(gparent);
+                rightRotate(gparent);
+            }else {
+                RBTNode<T> uncle = gparent.left;
+                if ((uncle != null) && isRed(uncle)){
+                    setColorBlack(uncle);
+                    setColorBlack(parent);
+                    setColorRed(gparent);
+                    node = gparent;
+                    continue;
+                }
+
+                if (parent.left == node){
+                    RBTNode<T> tmp;
+                    rightRotate(parent);
+                    tmp = parent;
+                    parent = node;
+                    node = tmp;
+                }
+                setColorBlack(parent);
+                setColorRed(gparent);
+                leftRotate(gparent);
+            }
+        }
+        // 维持第一准则：根节点为黑色
+        setColorBlack(this.root);
     }
 }
